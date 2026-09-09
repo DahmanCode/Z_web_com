@@ -27,6 +27,7 @@ export default function SiteFooter() {
           <h4 className="text-[13px] font-semibold uppercase tracking-[0.06em] text-white/50 mb-4">Company</h4>
           <ul className="space-y-3 text-[14.5px] text-white/75">
             <li><Link href="/about" className="hover:text-[#FFFDF8] transition-colors">About</Link></li>
+            <li><Link href="/safety" className="hover:text-[#FFFDF8] transition-colors">Safety</Link></li>  
             <li><a href="mailto:hello@zoufri.com" className="hover:text-[#FFFDF8] transition-colors">Contact</a></li>
           </ul>
         </div>
