@@ -137,12 +137,12 @@ export default function LandingBento() {
         {/* ROW 2 */}
         <div className="grid grid-cols-1 min-[860px]:grid-cols-[1fr_1fr_1.1fr] gap-5 mt-5">
           {/* STAT CARD */}
-          <div className="bg-[#C08A3E] text-[#211F1A] rounded-[28px] px-[26px] py-[30px] flex flex-col justify-between min-h-[200px]">
-            <div className="font-display text-[46px] font-medium">1,200+</div>
-            <p className="text-[14.5px] max-w-[220px] leading-[1.5] text-[#211F1A]/75">
-              Roommate matches made across Morocco since launch.
-            </p>
-          </div>
+<div className="bg-[#C08A3E] text-[#211F1A] rounded-[28px] px-[26px] py-[30px] flex flex-col justify-between min-h-[200px]">
+  <div className="font-display text-[40px] font-medium leading-[1.1]">Nationwide</div>
+  <p className="text-[14.5px] max-w-[220px] leading-[1.5] text-[#211F1A]/75">
+    Roommate matching built for every city in Morocco — not just the big three.
+  </p>
+</div>
 
           {/* STEPS CARD */}
           <div
