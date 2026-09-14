@@ -25,7 +25,7 @@ export default async function MatchesPage() {
   if (error) {
     return (
       <div className="mx-auto max-w-xl px-6 py-12">
-        <p className="text-red-600">Could not load matches: {error.message}</p>
+        <p className="text-clay">Could not load matches: {error.message}</p>
       </div>
     )
   }
@@ -41,10 +41,10 @@ export default async function MatchesPage() {
   if (otherIds.length === 0) {
     return (
       <div className="mx-auto max-w-xl px-6 py-12">
-        <h1 className="text-2xl font-semibold mb-6">Your matches</h1>
-        <div className="rounded-xl border border-gray-200 p-8 text-center text-gray-500">
+        <h1 className="font-display text-[30px] font-medium text-ink mb-7">Your matches</h1>
+        <div className="rounded-[28px] border border-ink/10 bg-paper p-10 text-center text-muted text-[14.5px]">
           No matches yet — head to{' '}
-          <Link href="/browse" className="underline">
+          <Link href="/browse" className="underline text-ink font-medium">
             browse
           </Link>{' '}
           to find some.
@@ -71,25 +71,25 @@ export default async function MatchesPage() {
   if (profilesError) {
     return (
       <div className="mx-auto max-w-xl px-6 py-12">
-        <p className="text-red-600">Could not load match profiles: {profilesError.message}</p>
+        <p className="text-clay">Could not load match profiles: {profilesError.message}</p>
       </div>
     )
   }
 
   return (
     <div className="mx-auto max-w-xl px-6 py-12">
-      <h1 className="text-2xl font-semibold mb-6">Your matches</h1>
+      <h1 className="font-display text-[30px] font-medium text-ink mb-7">Your matches</h1>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {(profiles ?? []).map((profile) => {
           const listing = Array.isArray(profile.listings) ? profile.listings[0] : profile.listings
 
           return (
             <div
               key={profile.id}
-              className="flex items-center gap-4 rounded-xl border border-gray-200 p-4"
+              className="flex items-center gap-4 rounded-[24px] border border-ink/10 bg-paper p-4"
             >
-              <div className="h-14 w-14 shrink-0 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 overflow-hidden">
+              <div className="h-14 w-14 shrink-0 rounded-full bg-[linear-gradient(160deg,#3A7186,#1F4E5F_60%,#C08A3E)] flex items-center justify-center text-white/70 overflow-hidden">
                 {profile.avatar_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -98,25 +98,25 @@ export default async function MatchesPage() {
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <span className="text-sm">No photo</span>
+                  <span className="text-[11px]">No photo</span>
                 )}
               </div>
 
               <div className="flex-1 min-w-0">
-                <p className="font-medium truncate">{profile.full_name ?? 'Anonymous'}</p>
-                <p className="text-sm text-gray-500 truncate">
+                <p className="font-semibold text-ink truncate">{profile.full_name ?? 'Anonymous'}</p>
+                <p className="text-[13.5px] text-muted truncate">
                   {profile.user_type === 'has_place' && listing
                     ? listing.address ?? listing.city ?? profile.preferred_city
                     : profile.preferred_city}
                 </p>
                 {profile.bio && (
-                  <p className="text-sm text-gray-400 truncate mt-0.5">{profile.bio}</p>
+                  <p className="text-[13px] text-muted/70 truncate mt-0.5">{profile.bio}</p>
                 )}
               </div>
 
               <Link
                 href={`/matches/${profile.id}`}
-                className="shrink-0 rounded-full border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50"
+                className="shrink-0 rounded-full border border-ink/15 px-4 py-2 text-[13.5px] font-semibold text-ink hover:bg-sand/30 transition-colors"
               >
                 Message
               </Link>
