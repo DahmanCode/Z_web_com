@@ -8,11 +8,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#14161a",
-        paper: "#fbfaf8",
-        accent: "#3b6e5e",
-        sand: "#ede4d3",
-        clay: "#c1512f",
+        ink: "#211F1A",
+        paper: "#FFFDF8",
+        accent: "#C08A3E",
+        cobalt: "#1F4E5F",
+        sand: "#E2DAC5",
+        clay: "#B5573C",
+        muted: "#5B5748",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "sans-serif"],
