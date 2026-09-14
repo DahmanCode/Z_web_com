@@ -71,7 +71,7 @@ export default async function BrowsePage() {
   if (error) {
     return (
       <div className="mx-auto max-w-xl px-6 py-12">
-        <p className="text-red-600">Could not load candidates: {error.message}</p>
+        <p className="text-clay">Could not load candidates: {error.message}</p>
       </div>
     )
   }
@@ -104,7 +104,7 @@ export default async function BrowsePage() {
 
   return (
     <div className="mx-auto max-w-xl px-6 py-12">
-      <h1 className="text-2xl font-semibold mb-6">
+      <h1 className="font-display text-[30px] font-medium text-ink mb-7">
         {targetType === 'has_place' ? 'Places for you' : 'Roommates for you'}
       </h1>
       <SwipeDeck candidates={scored} />
