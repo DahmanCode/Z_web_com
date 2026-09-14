@@ -15,7 +15,6 @@ export default function LandingBento() {
   return (
     <div className=" text-[#211F1A]">
       <div className="max-w-[1240px] mx-auto px-6 pt-4 pb-24">
-
         {/* HERO GRID */}
         <div className="grid grid-cols-1 min-[860px]:grid-cols-[1.55fr_1fr] gap-5">
           {/* HERO CARD */}
@@ -28,12 +27,13 @@ export default function LandingBento() {
               <h1 className="font-display font-medium text-[46px] leading-[1.12] max-w-[520px] tracking-[-0.01em]">
                 Find the roommate
                 <br />
-                who actually <span className="text-[#1F4E5F]">fits your life.</span>
+                who actually{" "}
+                <span className="text-[#1F4E5F]">fits your life.</span>
               </h1>
               <p className="mt-[18px] text-[16.5px] text-[#5B5748] max-w-[420px] leading-[1.55]">
                 Tell us how you live, we&apos;ll tell you who to live with.
-                Compatibility scored on cleanliness, sleep schedule, noise,
-                and budget — not just a photo.
+                Compatibility scored on cleanliness, sleep schedule, noise, and
+                budget — not just a photo.
               </p>
 
               <div className="inline-flex mt-7 bg-[#ECE6D6] p-[5px] rounded-full w-fit">
@@ -61,7 +61,10 @@ export default function LandingBento() {
             </div>
 
             <div className="flex items-center justify-between mt-8 flex-wrap gap-5">
-              <Link href={onboardingHref} className="inline-flex items-center gap-[10px] bg-[#211F1A] text-[#FFFDF8] px-6 py-[14px] rounded-full font-sans text-[15px] font-semibold">
+              <Link
+                href={onboardingHref}
+                className="inline-flex items-center gap-[10px] bg-[#211F1A] text-[#FFFDF8] px-6 py-[14px] rounded-full font-sans text-[15px] font-semibold"
+              >
                 Get matched
                 <span className="w-[26px] h-[26px] rounded-full bg-[#FFFDF8] text-[#211F1A] flex items-center justify-center text-[14px]">
                   →
@@ -69,13 +72,23 @@ export default function LandingBento() {
               </Link>
               <div className="flex items-center gap-[14px] text-[13.5px] text-[#5B5748]">
                 <div className="flex">
-                  <span className="w-8 h-8 rounded-full border-2 border-[#FFFDF8] bg-gradient-to-br from-[#C08A3E] to-[#B5573C]" />
-                  <span className="w-8 h-8 rounded-full border-2 border-[#FFFDF8] bg-gradient-to-br from-[#1F4E5F] to-[#3A7186] -ml-[10px]" />
-                  <span className="w-8 h-8 rounded-full border-2 border-[#FFFDF8] bg-gradient-to-br from-[#7C6A50] to-[#B5573C] -ml-[10px]" />
+                  <img
+                    src="https://api.dicebear.com/9.x/notionists/svg?seed=zoufri1&backgroundColor=e2dac5"
+                    className="w-8 h-8 rounded-full border-2 border-[#FFFDF8] bg-[#ECE6D6]"
+                    alt=""
+                  />
+                  <img
+                    src="https://api.dicebear.com/9.x/notionists/svg?seed=zoufri2&backgroundColor=e2dac5"
+                    className="w-8 h-8 rounded-full border-2 border-[#FFFDF8] bg-[#ECE6D6] -ml-[10px]"
+                    alt=""
+                  />
+                  <img
+                    src="https://api.dicebear.com/9.x/notionists/svg?seed=zoufri3&backgroundColor=e2dac5"
+                    className="w-8 h-8 rounded-full border-2 border-[#FFFDF8] bg-[#ECE6D6] -ml-[10px]"
+                    alt=""
+                  />
                 </div>
-                <span>
-                  Trusted by 1,200+ people across Morocco
-                </span>
+                <span>Built for roommates across Morocco</span>
               </div>
             </div>
           </div>
@@ -132,7 +145,10 @@ export default function LandingBento() {
           </div>
 
           {/* STEPS CARD */}
-                    <div id="how-it-works" className="bg-[#FFFDF8] border border-black/[0.12] rounded-[28px] px-[26px] py-7 min-h-[200px] scroll-mt-8">
+          <div
+            id="how-it-works"
+            className="bg-[#FFFDF8] border border-black/[0.12] rounded-[28px] px-[26px] py-7 min-h-[200px] scroll-mt-8"
+          >
             <h3 className="font-display text-[18px] mb-4">How it works</h3>
             {[
               {
@@ -174,17 +190,19 @@ export default function LandingBento() {
                 &ldquo;
               </div>
               <p className="font-display italic font-normal text-[15.5px] leading-[1.5] mt-2">
-                I&apos;d already moved twice with roommates who didn&apos;t
-                fit. Zoufri actually asked about my sleep schedule before
-                matching me.
+                No more gambling on roommates who don&apos;t fit. Zoufri asks
+                about your sleep schedule, habits, and budget — before you ever
+                move in.
               </p>
             </div>
             <div className="flex items-center gap-[10px] mt-[18px]">
-              <span className="w-[34px] h-[34px] rounded-full bg-gradient-to-br from-[#C08A3E] to-[#B5573C]" />
+              <span className="w-[34px] h-[34px] rounded-full bg-gradient-to-br from-[#C08A3E] to-[#B5573C] flex items-center justify-center text-[#FFFDF8] text-[15px] font-semibold">
+                Z
+              </span>
               <span className="text-[13px] text-white/70">
-                Yasmine
+                Our promise
                 <b className="block text-[#FFFDF8] text-[14px] font-semibold">
-                  Casablanca
+                  Built for real compatibility
                 </b>
               </span>
             </div>
@@ -203,7 +221,10 @@ export default function LandingBento() {
             </p>
           </div>
           <div className="relative z-10 flex items-center gap-[14px]">
-            <Link href={onboardingHref} className="bg-[#FFFDF8] text-[#211F1A] px-[26px] py-[15px] rounded-full font-sans font-semibold text-[15px] inline-block">
+            <Link
+              href={onboardingHref}
+              className="bg-[#FFFDF8] text-[#211F1A] px-[26px] py-[15px] rounded-full font-sans font-semibold text-[15px] inline-block"
+            >
               Create your profile
             </Link>
           </div>
