@@ -24,38 +24,41 @@ export default async function DashboardPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-xl flex-col gap-6 px-6 py-16">
-            <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
+    <main className="mx-auto max-w-2xl px-6 py-16">
+      <div className="flex items-center justify-between mb-10">
+        <h1 className="font-display text-[32px] font-medium text-ink">
+          Dashboard
+        </h1>
+        <span className="text-[13.5px] text-muted">
+          {user.email}
+        </span>
+      </div>
 
-      <p className="text-sm text-ink/70">
-        Signed in as <span className="font-medium text-ink">{user.email}</span>
-      </p>
-
-      <nav className="flex gap-4 text-sm font-medium">
-        <Link
-          href="/browse"
-          className="rounded-full border border-ink/10 px-4 py-2 hover:bg-ink/5"
-        >
-          Browse
-        </Link>
-        <Link
-          href="/matches"
-          className="rounded-full border border-ink/10 px-4 py-2 hover:bg-ink/5"
-        >
-          Matches
-        </Link>
-      </nav>
-
-      <div className="rounded-md border border-ink/10 p-4">
-        <h2 className="text-sm font-medium">
+      <div className="bg-ink text-paper rounded-[28px] px-8 py-9 mb-6">
+        <h2 className="font-display text-[22px] font-medium">
           Welcome{profile?.full_name ? `, ${profile.full_name}` : ""}
         </h2>
-        <p className="mt-2 text-sm text-ink/60">
+        <p className="mt-2 text-[14.5px] text-white/70 max-w-[420px] leading-[1.6]">
           {profile?.user_type === "has_place"
             ? "Browse people looking for a place, or check your matches."
             : "Browse available places, or check your matches."}
         </p>
       </div>
+
+      <nav className="flex gap-4">
+        <Link
+          href="/browse"
+          className="flex-1 text-center bg-paper border border-ink/10 rounded-full px-6 py-[14px] font-sans text-[14.5px] font-semibold text-ink hover:bg-sand/40 transition-colors"
+        >
+          Browse
+        </Link>
+        <Link
+          href="/matches"
+          className="flex-1 text-center bg-paper border border-ink/10 rounded-full px-6 py-[14px] font-sans text-[14.5px] font-semibold text-ink hover:bg-sand/40 transition-colors"
+        >
+          Matches
+        </Link>
+      </nav>
     </main>
   );
 }
