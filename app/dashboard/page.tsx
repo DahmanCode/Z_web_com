@@ -30,7 +30,7 @@ export default async function DashboardPage() {
           Dashboard
         </h1>
         <span className="text-[13.5px] text-muted">
-          {user.email}
+          {profile?.full_name ?? "Welcome"}
         </span>
       </div>
 
