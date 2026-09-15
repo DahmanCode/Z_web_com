@@ -12,7 +12,7 @@ function SendButton() {
     <button
       type="submit"
       disabled={pending}
-      className="rounded-full bg-black text-white px-5 py-2.5 text-sm font-medium disabled:opacity-50"
+      className="rounded-full bg-ink text-paper px-5 py-[10px] text-[14px] font-semibold disabled:opacity-50 hover:bg-ink/90 transition-colors"
     >
       {pending ? 'Sending...' : 'Send'}
     </button>
@@ -25,9 +25,9 @@ export default function MessageForm({ otherUserId }: { otherUserId: string }) {
   const formRef = useRef<HTMLFormElement>(null)
 
   return (
-    <div className="border-t border-gray-200 pt-4">
+    <div className="border-t border-ink/10 pt-4">
       {state?.error && (
-        <p className="mb-2 text-sm text-red-600">{state.error}</p>
+        <p className="mb-2 text-[13.5px] text-clay">{state.error}</p>
       )}
       <form
         ref={formRef}
@@ -43,7 +43,7 @@ export default function MessageForm({ otherUserId }: { otherUserId: string }) {
           placeholder="Type a message..."
           autoComplete="off"
           required
-          className="flex-1 rounded-full border border-gray-300 px-4 py-2.5 text-sm"
+          className="flex-1 rounded-full border border-ink/15 px-4 py-[10px] text-[14px] text-ink placeholder:text-muted/60 focus:outline-none focus:border-ink/30"
         />
         <SendButton />
       </form>

@@ -1,106 +1,109 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect, notFound } from 'next/navigation'
-import Link from 'next/link'
-import MessageForm from './message-form'
+import { createClient } from "@/lib/supabase/server";
+import { redirect, notFound } from "next/navigation";
+import Link from "next/link";
+import MessageForm from "./message-form";
 
 export default async function ConversationPage({
   params,
 }: {
-  params: { userId: string }
+  params: { userId: string };
 }) {
-  const supabase = await createClient()
-  const otherUserId = params.userId
+  const supabase = await createClient();
+  const otherUserId = params.userId;
 
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect('/login')
+    redirect("/login");
   }
 
   if (otherUserId === user.id) {
-    notFound()
+    notFound();
   }
 
-  // Resolve the canonical match row (sorted ordering, see actions.ts for why)
-  const [first, second] = [user.id, otherUserId].sort()
+  const [first, second] = [user.id, otherUserId].sort();
 
   const { data: matchRow } = await supabase
-    .from('matches')
-    .select('id')
-    .eq('user_id', first)
-    .eq('target_id', second)
-    .eq('status', 'matched')
-    .maybeSingle()
+    .from("matches")
+    .select("id")
+    .eq("user_id", first)
+    .eq("target_id", second)
+    .eq("status", "matched")
+    .maybeSingle();
 
   if (!matchRow) {
-    // Not actually matched with this person — don't leak the conversation UI
-    notFound()
+    notFound();
   }
 
   const { data: otherProfile } = await supabase
-    .from('profiles')
-    .select('id, full_name, avatar_url')
-    .eq('id', otherUserId)
-    .single()
+    .from("profiles")
+    .select("id, full_name, avatar_url")
+    .eq("id", otherUserId)
+    .single();
 
   const { data: messages } = await supabase
-    .from('messages')
-    .select('id, sender_id, content, created_at')
-    .eq('match_id', matchRow.id)
-    .order('created_at', { ascending: true })
+    .from("messages")
+    .select("id, sender_id, content, created_at")
+    .eq("match_id", matchRow.id)
+    .order("created_at", { ascending: true });
 
   return (
     <div className="mx-auto flex h-screen max-w-xl flex-col px-6 py-8">
-      <div className="flex items-center gap-3 border-b border-gray-200 pb-4">
-        <Link href="/matches" className="text-sm text-gray-500 hover:text-black">
+      <div className="flex items-center gap-3 border-b border-ink/10 pb-4">
+        <Link
+          href="/matches"
+          className="text-[13.5px] text-muted hover:text-ink transition-colors"
+        >
           ← Back
         </Link>
-        <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 overflow-hidden">
+        <div className="h-10 w-10 rounded-full bg-[linear-gradient(160deg,#3A7186,#1F4E5F_60%,#C08A3E)] flex items-center justify-center text-white/70 overflow-hidden">
           {otherProfile?.avatar_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={otherProfile.avatar_url}
-              alt={otherProfile.full_name ?? 'Match'}
+              alt={otherProfile.full_name ?? "Match"}
               className="h-full w-full object-cover"
             />
           ) : (
-            <span className="text-xs">👤</span>
+            <span className="text-[11px]">👤</span>
           )}
         </div>
-        <h1 className="font-medium">{otherProfile?.full_name ?? 'Anonymous'}</h1>
+        <h1 className="font-display text-[17px] font-medium text-ink">
+          {otherProfile?.full_name ?? "Anonymous"}
+        </h1>
       </div>
 
       <div className="flex-1 overflow-y-auto py-4 space-y-3">
         {(messages ?? []).length === 0 && (
-          <p className="text-center text-sm text-gray-400 mt-8">
+          <p className="text-center text-[13.5px] text-muted/70 mt-8">
             No messages yet — say hello!
           </p>
         )}
 
         {(messages ?? []).map((message) => {
-          const isMine = message.sender_id === user.id
+          const isMine = message.sender_id === user.id;
           return (
             <div
               key={message.id}
-              className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}
+              className={`flex ${isMine ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[75%] rounded-2xl px-4 py-2 text-sm ${
+                className={`max-w-[75%] rounded-2xl px-4 py-2 text-[14px] leading-[1.4] ${
                   isMine
-                    ? 'bg-black text-white rounded-br-sm'
-                    : 'bg-gray-100 text-black rounded-bl-sm'
+                    ? "bg-ink text-paper rounded-br-sm"
+                    : "bg-paper border border-ink/10 text-ink rounded-bl-sm"
                 }`}
               >
                 {message.content}
               </div>
             </div>
-          )
+          );
         })}
       </div>
 
       <MessageForm otherUserId={otherUserId} />
     </div>
-  )
+  );
 }
