@@ -45,9 +45,9 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="grid md:grid-cols-2 min-h-[calc(100vh-104px)]">
+        <div className="mx-auto max-w-[1240px] w-full px-6 grid md:grid-cols-2 gap-6 flex-1">
       {/* Branded panel */}
-      <div className="hidden md:flex relative flex-col justify-between overflow-hidden bg-[#211F1A] text-[#FFFDF8] p-12 rounded-[28px] m-4">
+      <div className="hidden md:flex relative flex-col justify-between overflow-hidden bg-[#211F1A] text-[#FFFDF8] p-12 rounded-[28px] my-4">
         <div
           className="pointer-events-none absolute -top-24 -right-24 w-[380px] h-[380px] rounded-full opacity-25"
           style={{ background: "radial-gradient(circle, #C08A3E 0%, transparent 70%)" }}
