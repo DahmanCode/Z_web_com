@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
@@ -11,18 +12,18 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
-  const [message, setMessage] = useState<string | null>(null);
+  const [status, setStatus] = useState<{ type: "error" | "success"; text: string } | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    setMessage(null);
+    setStatus(null);
 
     if (mode === "sign-in") {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
-        setMessage(error.message);
+        setStatus({ type: "error", text: error.message });
       } else {
         router.push("/dashboard");
         router.refresh();
@@ -34,9 +35,9 @@ export default function LoginPage() {
         options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
       });
       if (error) {
-        setMessage(error.message);
+        setStatus({ type: "error", text: error.message });
       } else {
-        setMessage("Check your email to confirm your account.");
+        setStatus({ type: "success", text: "Check your email to confirm your account." });
       }
     }
 
@@ -44,70 +45,157 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 px-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          {mode === "sign-in" ? "Sign in" : "Create an account"}
-        </h1>
-        <p className="mt-1 text-sm text-ink/60">
-          {mode === "sign-in"
-            ? "Welcome back."
-            : "Sign up with your email and a password."}
-        </p>
+    <div className="grid md:grid-cols-2 min-h-[calc(100vh-104px)]">
+      {/* Branded panel */}
+      <div className="hidden md:flex relative flex-col justify-between overflow-hidden bg-[#211F1A] text-[#FFFDF8] p-12 rounded-[28px] m-4">
+        <div
+          className="pointer-events-none absolute -top-24 -right-24 w-[380px] h-[380px] rounded-full opacity-25"
+          style={{ background: "radial-gradient(circle, #C08A3E 0%, transparent 70%)" }}
+        />
+        <div
+          className="pointer-events-none absolute -bottom-32 -left-16 w-[320px] h-[320px] rounded-full opacity-20"
+          style={{ background: "radial-gradient(circle, #1F4E5F 0%, transparent 70%)" }}
+        />
+
+        <Link href="/" className="relative flex items-center gap-3 font-display text-[20px] font-semibold">
+          <svg viewBox="0 0 100 100" className="w-9 h-9">
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#C08A3E" strokeWidth="7" />
+            <path
+              d="M 34,62 L 34,40 L 50,26 L 66,40 L 66,62"
+              fill="none"
+              stroke="#C08A3E"
+              strokeWidth="7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          Zoufri
+        </Link>
+
+        <div className="relative">
+          <h2 className="font-display text-[34px] leading-[1.15] font-medium max-w-[360px]">
+            Find the roommate who actually fits your life.
+          </h2>
+          <p className="mt-4 text-[15px] leading-[1.6] text-white/65 max-w-[340px]">
+            Matched on lifestyle, budget, and habits — not just a photo.
+          </p>
+        </div>
+
+        <ul className="relative space-y-3 text-[14px] text-white/70">
+          <li className="flex items-center gap-3">
+            <span className="w-[6px] h-[6px] rounded-full bg-[#C08A3E]" />
+            Roommates and rooms across Morocco
+          </li>
+          <li className="flex items-center gap-3">
+            <span className="w-[6px] h-[6px] rounded-full bg-[#C08A3E]" />
+            Compatibility scoring, not guesswork
+          </li>
+          <li className="flex items-center gap-3">
+            <span className="w-[6px] h-[6px] rounded-full bg-[#C08A3E]" />
+            Message once you're matched
+          </li>
+        </ul>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="email" className="text-sm font-medium">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="rounded-md border border-ink/15 bg-white px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
-          />
+      {/* Form panel */}
+      <div className="flex flex-col justify-center px-6 py-12 sm:px-12">
+        <div className="mx-auto w-full max-w-sm">
+          <Link
+            href="/"
+            className="md:hidden flex items-center gap-2 font-display text-[19px] font-semibold text-ink mb-10"
+          >
+            <span className="w-[24px] h-[24px] rounded-full border-[3px] border-accent block" />
+            Zoufri
+          </Link>
+
+          <div className="flex rounded-full bg-sand/40 p-1 mb-8">
+            <button
+              type="button"
+              onClick={() => {
+                setMode("sign-in");
+                setStatus(null);
+              }}
+              className={`flex-1 rounded-full py-2 text-[14px] font-semibold transition-colors ${
+                mode === "sign-in" ? "bg-ink text-paper" : "text-muted"
+              }`}
+            >
+              Sign in
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setMode("sign-up");
+                setStatus(null);
+              }}
+              className={`flex-1 rounded-full py-2 text-[14px] font-semibold transition-colors ${
+                mode === "sign-up" ? "bg-ink text-paper" : "text-muted"
+              }`}
+            >
+              Sign up
+            </button>
+          </div>
+
+          <h1 className="font-display text-[28px] font-medium text-ink">
+            {mode === "sign-in" ? "Welcome back" : "Create your account"}
+          </h1>
+          <p className="mt-1.5 text-[14.5px] text-muted">
+            {mode === "sign-in"
+              ? "Sign in to see your matches and messages."
+              : "Takes about a minute — no photo required yet."}
+          </p>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-7">
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="email" className="text-[13.5px] font-medium text-ink">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="rounded-2xl border border-ink/15 bg-paper px-4 py-[11px] text-[14.5px] text-ink outline-none focus:border-ink/40 transition-colors"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="password" className="text-[13.5px] font-medium text-ink">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                required
+                minLength={6}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="rounded-2xl border border-ink/15 bg-paper px-4 py-[11px] text-[14.5px] text-ink outline-none focus:border-ink/40 transition-colors"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="mt-2 rounded-full bg-ink px-4 py-[13px] text-[14.5px] font-semibold text-paper transition-colors hover:bg-ink/90 disabled:opacity-60"
+            >
+              {loading ? "Please wait…" : mode === "sign-in" ? "Sign in" : "Create account"}
+            </button>
+          </form>
+
+          {status && (
+            <p
+              className={`mt-4 text-[13.5px] rounded-xl p-3 ${
+                status.type === "error"
+                  ? "text-clay bg-clay/5 border border-clay/15"
+                  : "text-ink bg-sand/40"
+              }`}
+            >
+              {status.text}
+            </p>
+          )}
         </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="password" className="text-sm font-medium">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            required
-            minLength={6}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="rounded-md border border-ink/15 bg-white px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="mt-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white transition hover:bg-accent/90 disabled:opacity-60"
-        >
-          {loading ? "Please wait…" : mode === "sign-in" ? "Sign in" : "Sign up"}
-        </button>
-      </form>
-
-      {message && <p className="text-sm text-ink/70">{message}</p>}
-
-      <button
-        onClick={() => {
-          setMode(mode === "sign-in" ? "sign-up" : "sign-in");
-          setMessage(null);
-        }}
-        className="text-sm text-accent underline underline-offset-2"
-      >
-        {mode === "sign-in"
-          ? "Need an account? Sign up"
-          : "Already have an account? Sign in"}
-      </button>
-    </main>
+      </div>
+    </div>
   );
 }
