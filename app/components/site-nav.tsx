@@ -11,12 +11,22 @@ export default async function SiteNav() {
   return (
     <header className="mx-auto flex max-w-[1240px] items-center justify-between px-6 pt-8 pb-4">
       <Link
-        href="/"
-        className="font-display text-[22px] font-semibold text-[#211F1A] flex items-center gap-2"
-      >
-        <span className="w-[26px] h-[26px] rounded-[7px] bg-[#1F4E5F] relative block after:content-[''] after:absolute after:inset-[6px] after:rounded-[3px] after:bg-[#C08A3E]" />
-        Zoufri
-      </Link>
+  href="/"
+  className="font-display text-[22px] font-semibold text-[#211F1A] flex items-center gap-2"
+>
+  <svg viewBox="0 0 100 100" className="w-[26px] h-[26px]">
+    <circle cx="50" cy="50" r="38" fill="none" stroke="#C08A3E" strokeWidth="9" />
+    <path
+      d="M 34,62 L 34,40 L 50,26 L 66,40 L 66,62"
+      fill="none"
+      stroke="#C08A3E"
+      strokeWidth="9"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+  Zoufri
+</Link>
 
       <nav className="flex items-center gap-8 text-[15px] font-medium text-[#5B5748]">
         <Link href="/browse" className="hover:text-[#211F1A] transition-colors">
