@@ -28,6 +28,7 @@ export async function completeOnboarding(
   const moveInDate = formData.get('move_in_date') as string
   const preferredCity = formData.get('preferred_city') as string
   const bio = formData.get('bio') as string
+  const avatarUrl = formData.get('avatar_url') as string
 
   if (userType !== 'has_place' && userType !== 'needs_place') {
     return { error: 'Please select whether you have a place or need one.' }
@@ -43,6 +44,7 @@ export async function completeOnboarding(
       move_in_date: moveInDate || null,
       preferred_city: preferredCity || null,
       bio: bio || null,
+      ...(avatarUrl ? { avatar_url: avatarUrl } : {}),
     })
     .eq('id', user.id)
 
