@@ -57,7 +57,6 @@ export async function completeOnboarding(
   const noiseTolerance = formData.get('noise_tolerance') as string
   const sleepSchedule = formData.get('sleep_schedule') as string
   const smoking = formData.get('smoking') === 'on'
-  const drinking = formData.get('drinking') as string
   const hasPets = formData.get('has_pets') === 'on'
   const petType = formData.get('pet_type') as string
   const guestsOften = formData.get('guests_often') === 'on'
@@ -72,7 +71,6 @@ export async function completeOnboarding(
       noise_tolerance: noiseTolerance ? Number(noiseTolerance) : null,
       sleep_schedule: sleepSchedule || null,
       smoking,
-      drinking: drinking || null,
       has_pets: hasPets,
       pet_type: hasPets ? petType || null : null,
       guests_often: guestsOften,

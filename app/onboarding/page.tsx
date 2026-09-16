@@ -38,6 +38,76 @@ const inputClass =
   'w-full rounded-2xl border border-ink/15 bg-paper px-4 py-[11px] text-[14.5px] text-ink outline-none focus:border-ink/40 transition-colors'
 const labelClass = 'block text-[13.5px] font-medium text-ink mb-1.5'
 
+function ScaleField({
+  name,
+  label,
+  lowLabel,
+  highLabel,
+}: {
+  name: string
+  label: string
+  lowLabel: string
+  highLabel: string
+}) {
+  return (
+    <div>
+      <p className={labelClass}>{label}</p>
+      <div className="flex gap-2">
+        {[1, 2, 3, 4, 5].map((n) => (
+          <label key={n} className="flex-1">
+            <input
+              type="radio"
+              name={name}
+              value={n}
+              defaultChecked={n === 3}
+              className="peer sr-only"
+            />
+            <div className="rounded-xl border border-ink/15 py-2 text-center text-[14px] font-medium text-muted cursor-pointer transition-colors peer-checked:bg-ink peer-checked:text-paper peer-checked:border-ink hover:border-ink/40">
+              {n}
+            </div>
+          </label>
+        ))}
+      </div>
+      <div className="flex justify-between text-[12px] text-muted/70 mt-1.5">
+        <span>{lowLabel}</span>
+        <span>{highLabel}</span>
+      </div>
+    </div>
+  )
+}
+
+function SegmentOption({
+  name,
+  value,
+  label,
+  defaultChecked,
+}: {
+  name: string
+  value: string
+  label: string
+  defaultChecked?: boolean
+}) {
+  return (
+    <label className="flex-1">
+      <input type="radio" name={name} value={value} defaultChecked={defaultChecked} className="peer sr-only" />
+      <div className="rounded-full border border-ink/15 py-[9px] text-center text-[13.5px] font-medium text-muted cursor-pointer transition-colors peer-checked:bg-ink peer-checked:text-paper peer-checked:border-ink hover:border-ink/40">
+        {label}
+      </div>
+    </label>
+  )
+}
+
+function ChipCheckbox({ name, label }: { name: string; label: string }) {
+  return (
+    <label>
+      <input type="checkbox" name={name} className="peer sr-only" />
+      <div className="rounded-full border border-ink/15 px-4 py-2 text-[13.5px] font-medium text-muted cursor-pointer transition-colors peer-checked:bg-ink peer-checked:text-paper peer-checked:border-ink hover:border-ink/40">
+        {label}
+      </div>
+    </label>
+  )
+}
+
 function OnboardingForm() {
   const [state, formAction] = useFormState(completeOnboarding, initialState)
   const searchParams = useSearchParams()
@@ -161,61 +231,38 @@ function OnboardingForm() {
           </div>
         </div>
 
-        {/* STEP 3: lifestyle preferences */}
-        <div className={step === 3 ? 'space-y-5' : 'hidden'}>
+                {/* STEP 3: lifestyle preferences */}
+        <div className={step === 3 ? 'space-y-6' : 'hidden'}>
           <h1 className="font-display text-[27px] font-medium text-ink">Your lifestyle</h1>
 
-          <div>
-            <label className={labelClass}>Cleanliness (1 = relaxed, 5 = spotless)</label>
-            <input name="cleanliness" type="range" min="1" max="5" defaultValue="3" className="w-full accent-[#C08A3E]" />
+          <div className="rounded-[24px] border border-ink/10 bg-paper p-6 space-y-6">
+            <ScaleField name="cleanliness" label="Cleanliness" lowLabel="Relaxed" highLabel="Spotless" />
+            <ScaleField name="noise_tolerance" label="Noise tolerance" lowLabel="Need quiet" highLabel="Don't mind noise" />
+            <ScaleField name="social_level" label="Social level" lowLabel="Introvert" highLabel="Extrovert" />
+
+            <div>
+              <p className={labelClass}>Sleep schedule</p>
+              <div className="flex gap-2">
+                <SegmentOption name="sleep_schedule" value="early_bird" label="Early bird" />
+                <SegmentOption name="sleep_schedule" value="flexible" label="Flexible" defaultChecked />
+                <SegmentOption name="sleep_schedule" value="night_owl" label="Night owl" />
+              </div>
+            </div>
           </div>
 
-          <div>
-            <label className={labelClass}>Noise tolerance (1 = need quiet, 5 = don&apos;t mind noise)</label>
-            <input name="noise_tolerance" type="range" min="1" max="5" defaultValue="3" className="w-full accent-[#C08A3E]" />
-          </div>
+          <div className="rounded-[24px] border border-ink/10 bg-paper p-6 space-y-4">
+            <p className={labelClass}>A bit more about you</p>
+            <div className="flex flex-wrap gap-2">
+              <ChipCheckbox name="smoking" label="Smokes" />
+              <ChipCheckbox name="has_pets" label="Has pets" />
+              <ChipCheckbox name="guests_often" label="Has guests often" />
+              <ChipCheckbox name="work_from_home" label="Works from home" />
+            </div>
 
-          <div>
-            <label className={labelClass}>Social level (1 = introvert, 5 = extrovert)</label>
-            <input name="social_level" type="range" min="1" max="5" defaultValue="3" className="w-full accent-[#C08A3E]" />
-          </div>
-
-          <div>
-            <label className={labelClass}>Sleep schedule</label>
-            <select name="sleep_schedule" className={inputClass}>
-              <option value="flexible">Flexible</option>
-              <option value="early_bird">Early bird</option>
-              <option value="night_owl">Night owl</option>
-            </select>
-          </div>
-
-          <div>
-            <label className={labelClass}>Drinking</label>
-            <select name="drinking" className={inputClass}>
-              <option value="never">Never</option>
-              <option value="socially">Socially</option>
-              <option value="often">Often</option>
-            </select>
-          </div>
-
-          <div className="flex flex-wrap gap-x-6 gap-y-3">
-            <label className="flex items-center gap-2 text-[14px] text-ink">
-              <input type="checkbox" name="smoking" className="accent-[#C08A3E] w-4 h-4" /> Smokes
-            </label>
-            <label className="flex items-center gap-2 text-[14px] text-ink">
-              <input type="checkbox" name="has_pets" className="accent-[#C08A3E] w-4 h-4" /> Has pets
-            </label>
-            <label className="flex items-center gap-2 text-[14px] text-ink">
-              <input type="checkbox" name="guests_often" className="accent-[#C08A3E] w-4 h-4" /> Has guests often
-            </label>
-            <label className="flex items-center gap-2 text-[14px] text-ink">
-              <input type="checkbox" name="work_from_home" className="accent-[#C08A3E] w-4 h-4" /> Works from home
-            </label>
-          </div>
-
-          <div>
-            <label className={labelClass}>Pet type (if any)</label>
-            <input name="pet_type" type="text" placeholder="Cat, dog, etc." className={inputClass} />
+            <div>
+              <label className={labelClass}>Pet type (if any)</label>
+              <input name="pet_type" type="text" placeholder="Cat, dog, etc." className={inputClass} />
+            </div>
           </div>
 
           <div className="flex justify-between pt-1">

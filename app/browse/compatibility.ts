@@ -7,7 +7,6 @@ export type LifestylePrefs = {
   noise_tolerance: number | null
   sleep_schedule: string | null
   smoking: boolean | null
-  drinking: string | null
   has_pets: boolean | null
   guests_often: boolean | null
   social_level: number | null
@@ -22,8 +21,7 @@ const WEIGHTS = {
   sleep_schedule: 15,
   social_level: 15,
   smoking: 15,
-  drinking: 10,
-  guests_often: 10,
+  guests_often: 20,
 }
 
 function scoreNumeric(a: number | null, b: number | null, weight: number): number {
@@ -45,7 +43,6 @@ export function computeCompatibility(a: LifestylePrefs, b: LifestylePrefs): numb
   total += scoreNumeric(a.social_level, b.social_level, WEIGHTS.social_level)
   total += scoreExact(a.sleep_schedule, b.sleep_schedule, WEIGHTS.sleep_schedule)
   total += scoreExact(a.smoking, b.smoking, WEIGHTS.smoking)
-  total += scoreExact(a.drinking, b.drinking, WEIGHTS.drinking)
   total += scoreExact(a.guests_often, b.guests_often, WEIGHTS.guests_often)
   return Math.round(total)
 }
