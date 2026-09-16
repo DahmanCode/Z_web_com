@@ -11,8 +11,12 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
   const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
-  const [status, setStatus] = useState<{ type: "error" | "success"; text: string } | null>(null);
+  const [status, setStatus] = useState<{
+    type: "error" | "success";
+    text: string;
+  } | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -21,7 +25,10 @@ export default function LoginPage() {
     setStatus(null);
 
     if (mode === "sign-in") {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
       if (error) {
         setStatus({ type: "error", text: error.message });
       } else {
@@ -29,15 +36,30 @@ export default function LoginPage() {
         router.refresh();
       }
     } else {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+        options: {
+          data: { full_name: fullName },
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
       });
       if (error) {
         setStatus({ type: "error", text: error.message });
       } else {
-        setStatus({ type: "success", text: "Check your email to confirm your account." });
+        if (data.session && data.user) {
+          await supabase
+            .from("profiles")
+            .update({ full_name: fullName })
+            .eq("id", data.user.id);
+          router.push("/onboarding");
+          router.refresh();
+        } else {
+          setStatus({
+            type: "success",
+            text: "Check your email to confirm your account.",
+          });
+        }
       }
     }
 
@@ -45,21 +67,35 @@ export default function LoginPage() {
   }
 
   return (
-        <div className="mx-auto max-w-[1240px] w-full px-6 grid md:grid-cols-2 gap-6 flex-1">
+    <div className="mx-auto max-w-[1240px] w-full px-6 grid md:grid-cols-2 gap-6 flex-1">
       {/* Branded panel */}
       <div className="hidden md:flex relative flex-col justify-between overflow-hidden bg-[#211F1A] text-[#FFFDF8] p-12 rounded-[28px] my-4">
         <div
           className="pointer-events-none absolute -top-24 -right-24 w-[380px] h-[380px] rounded-full opacity-25"
-          style={{ background: "radial-gradient(circle, #C08A3E 0%, transparent 70%)" }}
+          style={{
+            background: "radial-gradient(circle, #C08A3E 0%, transparent 70%)",
+          }}
         />
         <div
           className="pointer-events-none absolute -bottom-32 -left-16 w-[320px] h-[320px] rounded-full opacity-20"
-          style={{ background: "radial-gradient(circle, #1F4E5F 0%, transparent 70%)" }}
+          style={{
+            background: "radial-gradient(circle, #1F4E5F 0%, transparent 70%)",
+          }}
         />
 
-        <Link href="/" className="relative flex items-center gap-3 font-display text-[20px] font-semibold">
+        <Link
+          href="/"
+          className="relative flex items-center gap-3 font-display text-[20px] font-semibold"
+        >
           <svg viewBox="0 0 100 100" className="w-9 h-9">
-            <circle cx="50" cy="50" r="38" fill="none" stroke="#C08A3E" strokeWidth="7" />
+            <circle
+              cx="50"
+              cy="50"
+              r="38"
+              fill="none"
+              stroke="#C08A3E"
+              strokeWidth="7"
+            />
             <path
               d="M 34,62 L 34,40 L 50,26 L 66,40 L 66,62"
               fill="none"
@@ -145,8 +181,29 @@ export default function LoginPage() {
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-7">
+            {mode === "sign-up" && (
+              <div className="flex flex-col gap-1.5">
+                <label
+                  htmlFor="fullName"
+                  className="text-[13.5px] font-medium text-ink"
+                >
+                  Full name
+                </label>
+                <input
+                  id="fullName"
+                  type="text"
+                  required
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  className="rounded-2xl border border-ink/15 bg-paper px-4 py-[11px] text-[14.5px] text-ink outline-none focus:border-ink/40 transition-colors"
+                />
+              </div>
+            )}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="email" className="text-[13.5px] font-medium text-ink">
+              <label
+                htmlFor="email"
+                className="text-[13.5px] font-medium text-ink"
+              >
                 Email
               </label>
               <input
@@ -160,7 +217,10 @@ export default function LoginPage() {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="password" className="text-[13.5px] font-medium text-ink">
+              <label
+                htmlFor="password"
+                className="text-[13.5px] font-medium text-ink"
+              >
                 Password
               </label>
               <input
@@ -188,7 +248,11 @@ export default function LoginPage() {
               disabled={loading}
               className="mt-2 rounded-full bg-ink px-4 py-[13px] text-[14.5px] font-semibold text-paper transition-colors hover:bg-ink/90 disabled:opacity-60"
             >
-              {loading ? "Please wait…" : mode === "sign-in" ? "Sign in" : "Create account"}
+              {loading
+                ? "Please wait…"
+                : mode === "sign-in"
+                  ? "Sign in"
+                  : "Create account"}
             </button>
           </form>
 
