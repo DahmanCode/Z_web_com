@@ -41,6 +41,9 @@ export default async function SiteNav() {
             <Link href="/matches" className="hover:text-[#211F1A] transition-colors">
               Matches
             </Link>
+            <Link href="/profile" className="hover:text-[#211F1A] transition-colors">
+              Profile
+            </Link>
             <SignOutButton />
           </>
         ) : (

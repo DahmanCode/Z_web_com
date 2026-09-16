@@ -58,6 +58,12 @@ export default async function DashboardPage() {
         >
           Matches
         </Link>
+        <Link
+          href="/profile"
+          className="flex-1 text-center bg-paper border border-ink/10 rounded-full px-6 py-[14px] font-sans text-[14.5px] font-semibold text-ink hover:bg-sand/40 transition-colors"
+        >
+          Profile
+        </Link>
       </nav>
     </main>
   );
