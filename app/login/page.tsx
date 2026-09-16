@@ -11,7 +11,9 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
   const [status, setStatus] = useState<{
     type: "error" | "success";
@@ -36,6 +38,11 @@ export default function LoginPage() {
         router.refresh();
       }
     } else {
+      if (password !== confirmPassword) {
+        setStatus({ type: "error", text: "Passwords don't match." });
+        setLoading(false);
+        return;
+      }
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -232,7 +239,50 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="rounded-2xl border border-ink/15 bg-paper px-4 py-[11px] text-[14.5px] text-ink outline-none focus:border-ink/40 transition-colors"
               />
+              {mode === "sign-up" && (
+                <p className="text-[12.5px] text-muted">At least 6 characters.</p>
+              )}
             </div>
+
+            {mode === "sign-up" && (
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="confirmPassword" className="text-[13.5px] font-medium text-ink">
+                  Confirm password
+                </label>
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  required
+                  minLength={6}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="rounded-2xl border border-ink/15 bg-paper px-4 py-[11px] text-[14.5px] text-ink outline-none focus:border-ink/40 transition-colors"
+                />
+              </div>
+            )}
+
+            {mode === "sign-up" && (
+              <label className="flex items-start gap-2.5 text-[13px] text-muted">
+                <input
+                  type="checkbox"
+                  required
+                  checked={agreedToTerms}
+                  onChange={(e) => setAgreedToTerms(e.target.checked)}
+                  className="mt-[3px] h-4 w-4 rounded border-ink/25 accent-[#211F1A]"
+                />
+                <span>
+                  I agree to the{" "}
+                  <Link href="/terms" className="font-medium text-ink underline underline-offset-2">
+                    Terms
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="/privacy" className="font-medium text-ink underline underline-offset-2">
+                    Privacy Policy
+                  </Link>
+                  .
+                </span>
+              </label>
+            )}
 
             {mode === "sign-in" && (
               <Link
