@@ -5,6 +5,73 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
+function PasswordField({
+  id,
+  label,
+  value,
+  onChange,
+  minLength,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  minLength?: number;
+}) {
+  const [visible, setVisible] = useState(false);
+
+  return (
+    <div className="flex flex-col gap-1.5">
+      <label htmlFor={id} className="text-[13.5px] font-medium text-ink">
+        {label}
+      </label>
+      <div className="relative">
+        <input
+          id={id}
+          type={visible ? "text" : "password"}
+          required
+          minLength={minLength}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full rounded-2xl border border-ink/15 bg-paper px-4 py-[11px] pr-11 text-[14.5px] text-ink outline-none focus:border-ink/40 transition-colors"
+        />
+        <button
+          type="button"
+          onClick={() => setVisible((v) => !v)}
+          className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted hover:text-ink transition-colors"
+          aria-label={visible ? "Hide password" : "Show password"}
+        >
+          {visible ? (
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.5 18.5 0 0 1 5.06-5.94M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+              <line x1="1" y1="1" x2="23" y2="23" />
+            </svg>
+          ) : (
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          )}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function LoginPage() {
   const router = useRouter();
   const supabase = createClient();
@@ -38,6 +105,17 @@ export default function LoginPage() {
         router.refresh();
       }
     } else {
+      const strongEnough = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(
+        password,
+      );
+      if (!strongEnough) {
+        setStatus({
+          type: "error",
+          text: "Password must be at least 8 characters and include an uppercase letter, a lowercase letter, and a number.",
+        });
+        setLoading(false);
+        return;
+      }
       if (password !== confirmPassword) {
         setStatus({ type: "error", text: "Passwords don't match." });
         setLoading(false);
@@ -223,42 +301,28 @@ export default function LoginPage() {
               />
             </div>
 
-            <div className="flex flex-col gap-1.5">
-              <label
-                htmlFor="password"
-                className="text-[13.5px] font-medium text-ink"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                required
-                minLength={6}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="rounded-2xl border border-ink/15 bg-paper px-4 py-[11px] text-[14.5px] text-ink outline-none focus:border-ink/40 transition-colors"
-              />
-              {mode === "sign-up" && (
-                <p className="text-[12.5px] text-muted">At least 6 characters.</p>
-              )}
-            </div>
+            <PasswordField
+              id="password"
+              label="Password"
+              value={password}
+              onChange={setPassword}
+              minLength={mode === "sign-up" ? 8 : 6}
+            />
+            {mode === "sign-up" && (
+              <p className="-mt-2 text-[12.5px] text-muted">
+                At least 8 characters, with an uppercase letter, a lowercase
+                letter, and a number.
+              </p>
+            )}
 
             {mode === "sign-up" && (
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="confirmPassword" className="text-[13.5px] font-medium text-ink">
-                  Confirm password
-                </label>
-                <input
-                  id="confirmPassword"
-                  type="password"
-                  required
-                  minLength={6}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="rounded-2xl border border-ink/15 bg-paper px-4 py-[11px] text-[14.5px] text-ink outline-none focus:border-ink/40 transition-colors"
-                />
-              </div>
+              <PasswordField
+                id="confirmPassword"
+                label="Confirm password"
+                value={confirmPassword}
+                onChange={setConfirmPassword}
+                minLength={8}
+              />
             )}
 
             {mode === "sign-up" && (
@@ -272,11 +336,17 @@ export default function LoginPage() {
                 />
                 <span>
                   I agree to the{" "}
-                  <Link href="/terms" className="font-medium text-ink underline underline-offset-2">
+                  <Link
+                    href="/terms"
+                    className="font-medium text-ink underline underline-offset-2"
+                  >
                     Terms
                   </Link>{" "}
                   and{" "}
-                  <Link href="/privacy" className="font-medium text-ink underline underline-offset-2">
+                  <Link
+                    href="/privacy"
+                    className="font-medium text-ink underline underline-offset-2"
+                  >
                     Privacy Policy
                   </Link>
                   .
