@@ -44,9 +44,6 @@ export default function AccountSettings({
     setEmailLoading(false);
   }
 
-  {/* Phone verification */}
-      <PhoneVerification currentPhone={currentPhone} verified={phoneVerified} />
-
   // Delete account
   const [confirmText, setConfirmText] = useState("");
   const [deleteStatus, setDeleteStatus] = useState<Status>(null);
@@ -115,6 +112,9 @@ export default function AccountSettings({
           </p>
         )}
       </section>
+
+      {/* Phone verification */}
+      <PhoneVerification currentPhone={currentPhone} verified={phoneVerified} />
 
       {/* Delete account */}
       <section className="space-y-4">

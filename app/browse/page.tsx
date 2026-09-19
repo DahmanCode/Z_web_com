@@ -56,6 +56,7 @@ export default async function BrowsePage() {
       budget_min,
       budget_max,
       move_in_date,
+      phone_verified,
       lifestyle_preferences (*),
       listings (*)
     `,
@@ -100,6 +101,7 @@ export default async function BrowsePage() {
         budget_min: c.budget_min,
         budget_max: c.budget_max,
         move_in_date: c.move_in_date,
+        phone_verified: c.phone_verified,
         listing:
           targetType === "has_place"
             ? Array.isArray(c.listings)
