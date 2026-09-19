@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { PasswordField, PASSWORD_PATTERN, PASSWORD_HINT } from "../components/form-fields";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -17,6 +18,14 @@ export default function ResetPasswordPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setStatus(null);
+
+    if (!PASSWORD_PATTERN.test(password)) {
+      setStatus({
+        type: "error",
+        text: "Password must be at least 8 characters and include an uppercase letter, a lowercase letter, and a number.",
+      });
+      return;
+    }
 
     if (password !== confirmPassword) {
       setStatus({ type: "error", text: "Passwords don't match." });
@@ -52,35 +61,16 @@ export default function ResetPasswordPage() {
       <p className="mt-1.5 text-[14.5px] text-muted">Choose a new password for your account.</p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-7">
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="password" className="text-[13.5px] font-medium text-ink">
-            New password
-          </label>
-          <input
-            id="password"
-            type="password"
-            required
-            minLength={6}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="rounded-2xl border border-ink/15 bg-paper px-4 py-[11px] text-[14.5px] text-ink outline-none focus:border-ink/40 transition-colors"
-          />
-        </div>
+                <PasswordField id="password" label="New password" value={password} onChange={setPassword} minLength={8} />
+        <p className="-mt-2 text-[12.5px] text-muted">{PASSWORD_HINT}</p>
 
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="confirmPassword" className="text-[13.5px] font-medium text-ink">
-            Confirm new password
-          </label>
-          <input
-            id="confirmPassword"
-            type="password"
-            required
-            minLength={6}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="rounded-2xl border border-ink/15 bg-paper px-4 py-[11px] text-[14.5px] text-ink outline-none focus:border-ink/40 transition-colors"
-          />
-        </div>
+        <PasswordField
+          id="confirmPassword"
+          label="Confirm new password"
+          value={confirmPassword}
+          onChange={setConfirmPassword}
+          minLength={8}
+        />
 
         <button
           type="submit"
