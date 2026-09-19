@@ -51,7 +51,11 @@ export default async function ProfilePage() {
         Your profile
       </h1>
       <ProfileForm profile={profile} lifestyle={lifestyle} listing={listing} />
-      <AccountSettings currentEmail={user.email ?? null} />
+      <AccountSettings
+        currentEmail={user.email ?? null}
+        currentPhone={user.phone || null}
+        phoneVerified={!!user.phone_confirmed_at}
+      />
     </main>
   );
 }

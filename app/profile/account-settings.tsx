@@ -4,10 +4,19 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { inputClass, labelClass } from "../components/form-fields";
+import PhoneVerification from "./phone-verification";
 
 type Status = { type: "error" | "success"; text: string } | null;
 
-export default function AccountSettings({ currentEmail }: { currentEmail: string | null }) {
+export default function AccountSettings({
+  currentEmail,
+  currentPhone,
+  phoneVerified,
+}: {
+  currentEmail: string | null;
+  currentPhone: string | null;
+  phoneVerified: boolean;
+}) {
   const router = useRouter();
   const supabase = createClient();
 
@@ -34,6 +43,9 @@ export default function AccountSettings({ currentEmail }: { currentEmail: string
     }
     setEmailLoading(false);
   }
+
+  {/* Phone verification */}
+      <PhoneVerification currentPhone={currentPhone} verified={phoneVerified} />
 
   // Delete account
   const [confirmText, setConfirmText] = useState("");
