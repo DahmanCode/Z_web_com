@@ -257,7 +257,6 @@ export default function LoginPage() {
                 label="Confirm password"
                 value={confirmPassword}
                 onChange={setConfirmPassword}
-                minLength={8}
               />
             )}
 

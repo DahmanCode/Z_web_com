@@ -69,7 +69,6 @@ export default function ResetPasswordPage() {
           label="Confirm new password"
           value={confirmPassword}
           onChange={setConfirmPassword}
-          minLength={8}
         />
 
         <button

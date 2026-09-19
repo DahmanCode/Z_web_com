@@ -33,9 +33,14 @@ export async function updateProfile(
   const avatarUrl = formData.get('avatar_url') as string
 
   // 1. Update the core profile
+  if (userType !== 'has_place' && userType !== 'needs_place') {
+    return { error: 'Invalid selection for what you\'re looking for.' }
+  }
+
   const { error: profileError } = await supabase
     .from('profiles')
     .update({
+      user_type: userType,
       full_name: fullName || null,
       budget_min: budgetMin ? Number(budgetMin) : null,
       budget_max: budgetMax ? Number(budgetMax) : null,
